@@ -15,8 +15,6 @@ class Server {
     config() {
         this.app.use(cors());
         this.app.use(express.json());
-
-        // ✅ FRONTEND SERVEN
         this.app.use(express.static(path.join(__dirname, "../frontend")));
     }
 

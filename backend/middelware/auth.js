@@ -1,19 +1,51 @@
-const jwt = require("jsonwebtoken");
+// LOGIN
+async function login() {
+    try {
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            })
+        });
 
-class AuthMiddleware {
-    static verify(req, res, next) {
-        const token = req.headers["authorization"];
+        const data = await res.json();
 
-        if (!token) return res.status(401).json({ msg: "No token" });
-
-        try {
-            const decoded = jwt.verify(token, "SECRET_KEY");
-            req.user = decoded;
-            next();
-        } catch {
-            res.status(401).json({ msg: "Invalid token" });
+        if (res.ok) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("name", data.name);
+            window.location.href = "dashboard.html";
+        } else {
+            alert(data.msg);
         }
+    } catch (error) {
+        alert("Server fout");
     }
 }
 
-module.exports = AuthMiddleware;
+// REGISTER
+async function register() {
+    try {
+        const res = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            alert("Registratie gelukt!");
+            window.location.href = "login.html";
+        } else {
+            alert(data.msg);
+        }
+    } catch (error) {
+        alert("Server fout");
+    }
+}

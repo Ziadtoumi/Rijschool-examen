@@ -2,20 +2,20 @@ const db = require("../config/db");
 
 class User {
 
-    static async findByEmail(email) {
-        const rows = await db.query(
-            "SELECT * FROM users WHERE email = ?",
-            [email]
+    static create(name, email, password) {
+        return db.query(
+            "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+            [name, email, password]
         );
-        return rows[0];
     }
 
-    static async create(email, password) {
-        return await db.query(
-            "INSERT INTO users (email, password) VALUES (?, ?)",
-            [email, password]
-        );
+    static findByEmail(email) {
+        return db.query(
+            "SELECT * FROM users WHERE email = ?",
+            [email]
+        ).then(results => results[0]);
     }
+
 }
 
 module.exports = User;

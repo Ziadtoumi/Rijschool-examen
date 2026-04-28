@@ -2,69 +2,9 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Rijschool Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="refresh" content="0; url=login.html">
+    <title>DriveSchool</title>
 </head>
 <body>
-
-<div id="app">
-
-    <!-- LOGIN -->
-    <div v-if="!loggedIn" class="login-box">
-        <h1>Rijschool Login</h1>
-
-        <input v-model="email" placeholder="Email">
-        <input v-model="password" type="password" placeholder="Wachtwoord">
-
-        <button @click="login">Login</button>
-        <button @click="register">Register</button>
-    </div>
-
-    <!-- DASHBOARD -->
-    <div v-if="loggedIn" class="dashboard">
-
-        <div class="header">
-            <h1>Mijn Dashboard</h1>
-            <button @click="logout">Logout</button>
-        </div>
-
-        <!-- ADD LESSON -->
-        <div class="add-box">
-            <h2>Nieuwe les plannen</h2>
-
-            <input type="date" v-model="newDate">
-            <input type="time" v-model="newTime">
-
-            <button @click="addLesson">Toevoegen</button>
-        </div>
-
-        <!-- LESSONS -->
-        <h2>Mijn lessen</h2>
-
-        <div v-for="lesson in lessons" class="lesson-card">
-
-            <div class="lesson-info">
-                <strong>{{ lesson.date }}</strong>
-                <span>{{ lesson.time }}</span>
-            </div>
-
-            <div class="status">
-                <span v-if="lesson.status === 'upcoming'">🟢</span>
-                <span v-if="lesson.status === 'cancelled'">🔴</span>
-            </div>
-
-            <button class="cancel" @click="cancelLesson(lesson.id)">
-                Annuleer
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-<script src="https://unpkg.com/vue@3"></script>
-<script src="app.js"></script>
-
 </body>
 </html>
