@@ -65,11 +65,18 @@ if (document.getElementById("app")) {
                 username: localStorage.getItem("name") || "Student",
                 lessons: [],
                 loading: true,
+                bookedTimes: [],
+                allTimes: [
+                    "09:00:00", "10:00:00", "11:00:00", "12:00:00",
+                    "13:00:00", "14:00:00", "15:00:00", "16:00:00",
+                    "17:00:00", "18:00:00"
+                ],
                 newLesson: {
-                    title: "",
                     date: "",
-                    time: "10:00"
-                }
+                    time: ""
+                },
+                showCancelModal: false,
+                cancelLessonId: null
             };
         },
 
@@ -103,9 +110,24 @@ if (document.getElementById("app")) {
                 }
             },
 
+            async fetchBookedTimes() {
+                if (!this.newLesson.date) return;
+                try {
+                    const token = localStorage.getItem("token");
+                    const res = await fetch(`/api/lessons/booked?date=${this.newLesson.date}`, {
+                        headers: { "Authorization": `Bearer ${token}` }
+                    });
+                    const data = await res.json();
+                    this.bookedTimes = data.map(t => t.length === 5 ? t + ":00" : t);
+                    this.newLesson.time = "";
+                } catch (err) {
+                    console.error("Fout bij laden tijden:", err);
+                }
+            },
+
             async addLesson() {
-                if (!this.newLesson.title || !this.newLesson.date) {
-                    alert("Vul les type en datum in");
+                if (!this.newLesson.date || !this.newLesson.time) {
+                    alert("Kies een datum en tijdstip");
                     return;
                 }
 
@@ -120,26 +142,52 @@ if (document.getElementById("app")) {
                         body: JSON.stringify(this.newLesson)
                     });
 
+                    const data = await res.json();
+
                     if (res.ok) {
-                        this.newLesson = { title: "", date: "", time: "10:00" };
+                        this.newLesson = { date: "", time: "" };
+                        this.bookedTimes = [];
                         await this.fetchLessons();
                     } else {
-                        alert("Fout bij toevoegen");
+                        alert(data.msg);
                     }
                 } catch (err) {
                     alert("Server fout");
                 }
             },
 
-            async cancelLesson(id) {
-                if (!confirm("Les annuleren?")) return;
-
+            async completeLesson(id) {
+                if (!confirm("Les markeren als voltooid?")) return;
                 try {
                     const token = localStorage.getItem("token");
-                    await fetch(`/api/lessons/${id}`, {
+                    await fetch(`/api/lessons/${id}/complete`, {
+                        method: "PUT",
+                        headers: { "Authorization": `Bearer ${token}` }
+                    });
+                    await this.fetchLessons();
+                } catch (err) {
+                    alert("Server fout");
+                }
+            },
+
+            openCancelModal(id) {
+                this.cancelLessonId = id;
+                this.showCancelModal = true;
+            },
+
+            closeCancelModal() {
+                this.cancelLessonId = null;
+                this.showCancelModal = false;
+            },
+
+            async confirmCancel() {
+                try {
+                    const token = localStorage.getItem("token");
+                    await fetch(`/api/lessons/${this.cancelLessonId}`, {
                         method: "DELETE",
                         headers: { "Authorization": `Bearer ${token}` }
                     });
+                    this.closeCancelModal();
                     await this.fetchLessons();
                 } catch (err) {
                     alert("Server fout");
@@ -161,7 +209,7 @@ if (document.getElementById("app")) {
             },
 
             formatTime(time) {
-                return time ? time.substring(0, 5) : "10:00";
+                return time ? time.substring(0, 5) : "";
             }
         },
 

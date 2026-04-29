@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - DriveSchool</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
     <div id="app">
@@ -14,7 +13,7 @@
         <nav class="navbar">
             <div class="navbar-left">
                 <div class="logo">
-                    <div class="logo-icon">🚗</div>
+                    <div class="logo-icon">RT</div>
                     <span>DriveSchool</span>
                 </div>
             </div>
@@ -74,9 +73,19 @@
             <div class="add-section">
                 <h2>Plan Nieuwe Les</h2>
                 <div class="add-form">
-                    <input type="text" v-model="newLesson.title" placeholder="Les type (bijv. Parkeren)">
-                    <input type="date" v-model="newLesson.date">
-                    <input type="time" v-model="newLesson.time">
+                    <input type="date" v-model="newLesson.date" @change="fetchBookedTimes">
+                    <select v-model="newLesson.time">
+                        <option value="" disabled>Kies tijdstip</option>
+                        <option
+                            v-for="time in allTimes"
+                            :key="time"
+                            :value="time"
+                            :disabled="bookedTimes.includes(time)"
+                            :style="bookedTimes.includes(time) ? 'text-decoration: line-through; color: #ccc;' : ''"
+                        >
+                            {{ time.substring(0, 5) }}
+                        </option>
+                    </select>
                     <button class="add-btn" @click="addLesson">+ Toevoegen</button>
                 </div>
             </div>
@@ -101,20 +110,38 @@
                             <span class="day">{{ formatDay(lesson.date) }}</span>
                         </div>
                         <div class="lesson-info">
-                            <span class="lesson-tag">{{ lesson.title }}</span>
-                            <p class="lesson-details">{{ formatTime(lesson.time) }} · 90 min · {{ lesson.instructor || 'Instructeur' }}</p>
+                            <p class="lesson-details">{{ formatTime(lesson.time) }} · 60 min</p>
                         </div>
-                        <button class="cancel-btn" @click="cancelLesson(lesson.id)">
-                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                        </button>
+                        <div class="lesson-actions">
+                            <button class="complete-btn" @click="completeLesson(lesson.id)" title="Markeer als voltooid">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                            </button>
+                            <button class="cancel-btn" @click="openCancelModal(lesson.id)" title="Annuleren">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </main>
+
+        <!-- CANCEL MODAL -->
+        <div v-if="showCancelModal" class="modal-overlay" @click.self="closeCancelModal">
+            <div class="modal">
+                <h3>Les annuleren</h3>
+                <p>Wat is de reden voor annulering?</p>
+                <div class="modal-buttons">
+                    <button class="modal-btn sick" @click="confirmCancel('ziek')">Ziek melden</button>
+                    <button class="modal-btn cancel" @click="confirmCancel('afmelden')">Afmelden</button>
+                </div>
+                <button class="modal-close" @click="closeCancelModal">Terug</button>
+            </div>
+        </div>
+
     </div>
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script src="dashboard.js"></script>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

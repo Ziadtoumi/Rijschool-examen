@@ -1,51 +1,19 @@
-// LOGIN
-async function login() {
+const jwt = require("jsonwebtoken");
+
+function auth(req, res, next) {
+    const token = req.headers["authorization"]?.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ msg: "Geen token" });
+    }
+
     try {
-        const res = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                email: document.getElementById("email").value,
-                password: document.getElementById("password").value
-            })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("name", data.name);
-            window.location.href = "dashboard.html";
-        } else {
-            alert(data.msg);
-        }
-    } catch (error) {
-        alert("Server fout");
+        const decoded = jwt.verify(token, "SECRET_KEY");
+        req.user = decoded;
+        next();
+    } catch (err) {
+        res.status(401).json({ msg: "Ongeldige token" });
     }
 }
 
-// REGISTER
-async function register() {
-    try {
-        const res = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name: document.getElementById("name").value,
-                email: document.getElementById("email").value,
-                password: document.getElementById("password").value
-            })
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-            alert("Registratie gelukt!");
-            window.location.href = "login.html";
-        } else {
-            alert(data.msg);
-        }
-    } catch (error) {
-        alert("Server fout");
-    }
-}
+module.exports = auth;

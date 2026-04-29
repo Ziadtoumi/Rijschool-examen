@@ -9,6 +9,13 @@ class Lesson {
         );
     }
 
+    static async getBookedTimes(date) {
+        return await db.query(
+            "SELECT time FROM lessons WHERE date = ? AND status = 'upcoming'",
+            [date]
+        );
+    }
+
     static async create(userId, date, time) {
         return await db.query(
             "INSERT INTO lessons (user_id, date, time) VALUES (?, ?, ?)",
@@ -19,6 +26,13 @@ class Lesson {
     static async cancel(id, userId) {
         return await db.query(
             "UPDATE lessons SET status = 'cancelled' WHERE id = ? AND user_id = ?",
+            [id, userId]
+        );
+    }
+
+    static async complete(id, userId) {
+        return await db.query(
+            "UPDATE lessons SET status = 'completed' WHERE id = ? AND user_id = ?",
             [id, userId]
         );
     }
