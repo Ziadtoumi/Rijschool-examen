@@ -61,10 +61,7 @@ body {
     letter-spacing: -0.5px;
 }
 
-.navbar-center {
-    display: flex;
-    gap: 4px;
-}
+.navbar-center { display: flex; gap: 4px; }
 
 .nav-link {
     display: flex;
@@ -146,57 +143,6 @@ body {
 .stat-number { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
 .stat-label { color: var(--text-muted); font-size: 14px; }
 
-/* ADD SECTION */
-.add-section {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 32px;
-    box-shadow: var(--shadow);
-}
-
-.add-section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
-
-.add-form {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.add-form input,
-.add-form select {
-    flex: 1;
-    min-width: 150px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    outline: none;
-    background: white;
-    transition: border 0.2s;
-    cursor: pointer;
-}
-
-.add-form input:focus,
-.add-form select:focus { border-color: var(--primary); }
-
-.add-btn {
-    padding: 10px 20px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.2s;
-}
-
-.add-btn:hover { background: #1d4ed8; }
-
 /* LESSONS */
 .lessons-section {
     background: var(--white);
@@ -246,10 +192,7 @@ body {
 .lesson-info { flex: 1; }
 .lesson-details { font-size: 13px; color: var(--text-muted); }
 
-.lesson-actions {
-    display: flex;
-    gap: 8px;
-}
+.lesson-actions { display: flex; gap: 8px; }
 
 .complete-btn {
     background: none;
@@ -299,6 +242,7 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 999;
+    padding: 16px;
 }
 
 .modal {
@@ -311,23 +255,9 @@ body {
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 
-.modal h3 {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.modal p {
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-bottom: 24px;
-}
-
-.modal-buttons {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-}
+.modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+.modal-buttons { display: flex; gap: 12px; margin-bottom: 16px; }
 
 .modal-btn {
     flex: 1;
@@ -342,16 +272,8 @@ body {
 }
 
 .modal-btn:hover { opacity: 0.85; }
-
-.modal-btn.sick {
-    background: #fef9c3;
-    color: #854d0e;
-}
-
-.modal-btn.cancel {
-    background: var(--red-light);
-    color: var(--red);
-}
+.modal-btn.sick { background: #fef9c3; color: #854d0e; }
+.modal-btn.cancel { background: var(--red-light); color: var(--red); }
 
 .modal-close {
     background: none;
@@ -365,3 +287,45 @@ body {
 }
 
 .modal-close:hover { background: var(--bg); }
+
+/* MOBIEL */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 16px;
+        height: 56px;
+    }
+
+    .logo span { display: none; }
+
+    .nav-link {
+        padding: 8px 10px;
+        font-size: 12px;
+        gap: 4px;
+    }
+
+    .nav-link span { display: none; }
+
+    .signout-btn span { display: none; }
+    .signout-btn { padding: 8px 10px; }
+
+    .main { padding: 20px 16px; }
+
+    .welcome h1 { font-size: 20px; }
+    .welcome p { font-size: 13px; }
+
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .stat-card { padding: 16px 12px; }
+    .stat-number { font-size: 24px; }
+    .stat-label { font-size: 12px; }
+    .stat-icon { width: 32px; height: 32px; margin-bottom: 10px; }
+
+    .lessons-section { padding: 16px; }
+
+    .lesson-card { gap: 10px; }
+    .lesson-date { min-width: 46px; padding: 6px 8px; }
+    .day { font-size: 18px; }
+}

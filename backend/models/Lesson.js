@@ -4,14 +4,14 @@ class Lesson {
 
     static async getByUser(userId) {
         return await db.query(
-            "SELECT * FROM lessons WHERE user_id = ?",
+            "SELECT id, user_id, DATE_FORMAT(date, '%Y-%m-%d') as date, time, status FROM lessons WHERE user_id = ?",
             [userId]
         );
     }
 
     static async getBookedTimes(date) {
         return await db.query(
-            "SELECT time FROM lessons WHERE date = ? AND status = 'upcoming'",
+            "SELECT time FROM lessons WHERE DATE_FORMAT(date, '%Y-%m-%d') = ? AND status = 'upcoming'",
             [date]
         );
     }

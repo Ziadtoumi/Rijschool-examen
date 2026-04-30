@@ -17,7 +17,6 @@ body {
     min-height: 100vh;
 }
 
-/* LINKS - blauw */
 .auth-left {
     width: 50%;
     background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
@@ -61,7 +60,6 @@ body {
     max-width: 300px;
 }
 
-/* RECHTS - wit */
 .auth-right {
     width: 50%;
     background: #f8fafc;
@@ -81,6 +79,7 @@ body {
     font-weight: 800;
     color: #0f172a;
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .auth-form .subtitle {
@@ -147,9 +146,7 @@ body {
     gap: 8px;
 }
 
-.auth-form button:hover {
-    background: #1e40af;
-}
+.auth-form button:hover { background: #1e40af; }
 
 .auth-form p {
     font-size: 14px;
@@ -163,6 +160,34 @@ body {
     text-decoration: none;
 }
 
-.auth-form a:hover {
-    text-decoration: underline;
+.auth-form a:hover { text-decoration: underline; }
+
+/* MOBIEL */
+@media (max-width: 768px) {
+    .auth-split {
+        flex-direction: column;
+    }
+
+    .auth-left {
+        width: 100%;
+        padding: 40px 24px;
+        min-height: auto;
+    }
+
+    .auth-left-content h2 { font-size: 22px; }
+    .auth-left-content p { font-size: 13px; }
+
+    .logo-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+
+    .auth-right {
+        width: 100%;
+        padding: 32px 20px;
+    }
+
+    .auth-form h1 { font-size: 22px; }
 }
