@@ -33,13 +33,13 @@ class AuthController {
             const user = await User.findByEmail(email);
 
             if (!user) {
-                return res.status(404).json({ msg: "Gebruiker niet gevonden" });
+                return res.status(404).json({ msg: "Email of wachtwoord is onjuist" });
             }
 
             const valid = await bcrypt.compare(password, user.password);
 
             if (!valid) {
-                return res.status(401).json({ msg: "Verkeerd wachtwoord" });
+                return res.status(401).json({ msg: "Email of wachtwoord is onjuist" });
             }
 
             const token = jwt.sign(
@@ -52,7 +52,7 @@ class AuthController {
 
         } catch (error) {
             console.log("LOGIN ERROR:", error.message);
-            res.status(500).json({ msg: error.message });
+            res.status(500).json({ msg: "Server fout" });
         }
     }
 
